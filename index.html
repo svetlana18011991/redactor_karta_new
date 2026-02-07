@@ -28,9 +28,6 @@
       --qFont: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       --qSize: 16px;
       --qColor: #eaf0ff;
-
-      /* draw anim */
-      --drawDur: 650ms;
     }
 
     *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
@@ -45,7 +42,9 @@
       min-height:100vh;
     }
 
-    body.gameOnly{ background: rgba(0,0,0,0); }
+    body.gameOnly{
+      background: rgba(0,0,0,0);
+    }
 
     .app{
       display:grid;
@@ -55,7 +54,10 @@
       max-width: 1480px;
       margin: 0 auto;
     }
-    @media (max-width: 980px){ .app{grid-template-columns:1fr} }
+
+    @media (max-width: 980px){
+      .app{grid-template-columns:1fr}
+    }
 
     .panel{
       background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
@@ -72,6 +74,7 @@
       border-bottom:1px solid rgba(255,255,255,.10);
       display:flex;align-items:center;justify-content:space-between;gap:10px;
     }
+
     .panel-header .h{font-weight:950;letter-spacing:.2px}
     .panel-body{padding:14px}
 
@@ -87,6 +90,7 @@
       line-height:1.35;
       white-space:pre-wrap;
     }
+
     .errbar.show{display:block}
 
     .settings{
@@ -95,7 +99,11 @@
       flex-direction:column;
       min-height: 560px;
     }
-    .settings .panel-body{ overflow:auto; padding:14px; }
+
+    .settings .panel-body{
+      overflow:auto;
+      padding:14px;
+    }
 
     .section{
       padding:12px 12px;
@@ -104,6 +112,7 @@
       background:rgba(0,0,0,.16);
       margin-bottom:12px;
     }
+
     .section .title{
       font-weight:950;
       font-size:13.5px;
@@ -130,6 +139,7 @@
       color:var(--text);
       outline:none;
     }
+
     textarea{min-height:84px; resize:vertical}
 
     input[type="color"]{
@@ -163,6 +173,7 @@
       background:rgba(255,255,255,.04);
       margin-top:8px;
     }
+
     .toggle input{width:18px; height:18px}
 
     .btn{
@@ -182,13 +193,16 @@
       user-select:none;
       white-space:nowrap;
     }
+
     .btn:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.24)}
     .btn:active{transform:translateY(1px)}
+
     .btn.primary{
       background:linear-gradient(90deg, rgba(106,164,255,.42), rgba(155,123,255,.34));
       border-color:rgba(106,164,255,.40);
       box-shadow: 0 10px 26px rgba(106,164,255,.14);
     }
+
     .btn.danger{border-color:rgba(255,77,77,.35); background:rgba(255,77,77,.08)}
     .btn.small{padding:8px 10px; font-size:12.5px; border-radius:12px}
 
@@ -262,6 +276,8 @@
         radial-gradient(900px 520px at 88% 18%, rgba(155,123,255,.12), rgba(0,0,0,0) 60%),
         linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.14));
       box-shadow: var(--shadow2);
+      background-size: auto;
+      background-position: initial;
     }
 
     .preview-ui{
@@ -372,8 +388,6 @@
       overflow:hidden;
       position:relative;
       padding:14px;
-
-      transform-style: preserve-3d;
     }
 
     .front-card .frame{
@@ -441,32 +455,25 @@
       white-space:pre-wrap;
     }
 
-    /* draw anim (взяли из колоды + переворот) */
-    .drawAnim{
-      animation-duration: var(--drawDur);
-      animation-timing-function: cubic-bezier(.22,.85,.24,1);
-      animation-fill-mode: both;
-      transform-origin: 20% 75%;
-      will-change: transform, opacity;
-    }
-    .drawAnim.flipY{ animation-name: drawFromDeckFlipY; }
-    .drawAnim.flipX{ animation-name: drawFromDeckFlipX; }
-    .drawAnim.flipDiag{ animation-name: drawFromDeckFlipDiag; }
+    /* Анимации */
+    .cardAnim-pop{ animation: cardPop .32s ease-out; }
+    @keyframes cardPop{ from{transform:translateY(10px) scale(.98);opacity:0} to{transform:none;opacity:1} }
 
-    @keyframes drawFromDeckFlipY{
-      0%{ transform: translateX(-140px) translateY(-40px) scale(.88) rotateY(85deg); opacity:0; }
-      55%{ opacity:1; }
-      100%{ transform: translateX(0) translateY(0) scale(1) rotateY(0deg); opacity:1; }
-    }
-    @keyframes drawFromDeckFlipX{
-      0%{ transform: translateX(-140px) translateY(-40px) scale(.88) rotateX(85deg); opacity:0; }
-      55%{ opacity:1; }
-      100%{ transform: translateX(0) translateY(0) scale(1) rotateX(0deg); opacity:1; }
-    }
-    @keyframes drawFromDeckFlipDiag{
-      0%{ transform: translateX(-140px) translateY(-40px) scale(.88) rotateX(65deg) rotateY(55deg); opacity:0; }
-      55%{ opacity:1; }
-      100%{ transform: translateX(0) translateY(0) scale(1) rotateX(0deg) rotateY(0deg); opacity:1; }
+    .cardAnim-slideUp{ animation: cardSlideUp .36s ease-out; }
+    @keyframes cardSlideUp{ from{transform:translateY(18px);opacity:0} to{transform:none;opacity:1} }
+
+    .cardAnim-fade{ animation: cardFade .28s ease-out; }
+    @keyframes cardFade{ from{opacity:0} to{opacity:1} }
+
+    .cardAnim-flip{ animation: cardFlip .42s ease-out; transform-origin:center; }
+    @keyframes cardFlip{ from{transform:rotateY(80deg);opacity:0} to{transform:rotateY(0);opacity:1} }
+
+    .cardAnim-shake{ animation: cardShake .38s ease-out; }
+    @keyframes cardShake{
+      0%{transform:translateX(0);opacity:0}
+      30%{transform:translateX(-6px);opacity:1}
+      60%{transform:translateX(6px)}
+      100%{transform:translateX(0)}
     }
 
     .toast{
@@ -486,6 +493,7 @@
       transition:opacity .18s ease, transform .18s ease;
       z-index:999999;
     }
+
     .toast.show{
       opacity:1;
       transform:translateX(-50%) translateY(-4px)
@@ -581,12 +589,14 @@
       position:relative;
       overflow:hidden;
     }
+
     .iconBtn:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.24)}
     .iconBtn:active{transform:translateY(1px)}
     .iconBtn input{ position:absolute; inset:0; opacity:0; cursor:pointer; }
 
     #gameRoot{ display:none; min-height:100vh; padding:14px; }
     #gameShell{ max-width: 1200px; margin: 0 auto; }
+
   </style>
 </head>
 
@@ -612,46 +622,6 @@
 
           <label>Подзаголовок</label>
           <input id="inpSubtitle" type="text" value="Нажмите на колоду, чтобы вытянуть карту" />
-        </div>
-
-        <div class="section">
-          <div class="title">Режим</div>
-
-          <label>Порядок вопросов</label>
-          <select id="selOrderMode">
-            <option value="random" selected>Рандом (перемешать)</option>
-            <option value="ordered">По порядку</option>
-          </select>
-
-          <div class="muted" style="margin-top:8px">
-            Влияет на игру (iframe).
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="title">Анимация вытягивания карты</div>
-
-          <div class="toggle" style="margin-top:10px">
-            <input id="chkDrawAnim" type="checkbox" checked />
-            <div>
-              <div style="font-weight:900">Показывать “взяли из колоды + переворот”</div>
-              <div class="muted">Карточка “летит” из колоды к полю и переворачивается.</div>
-            </div>
-          </div>
-
-          <label>Вариант переворота</label>
-          <select id="selFlipType">
-            <option value="flipY" selected>Flip Y (влево/вправо)</option>
-            <option value="flipX">Flip X (вверх/вниз)</option>
-            <option value="flipDiag">Диагональный flip</option>
-          </select>
-
-          <label>Длительность (мс)</label>
-          <input id="inpDrawDur" type="number" min="200" max="2000" step="10" value="650" />
-
-          <div class="muted" style="margin-top:8px">
-            Если выключить — будет “мгновенная” смена карты.
-          </div>
         </div>
 
         <div class="section">
@@ -683,6 +653,19 @@
           <div class="muted" style="margin-top:8px">
             Применяется к <b>текстовым</b> вопросам в превью и в игре.
           </div>
+        </div>
+
+        <div class="section">
+          <div class="title">Анимация появления карты</div>
+          <label>Эффект</label>
+          <select id="selCardAnim">
+            <option value="off" selected>Выключено (как сейчас)</option>
+            <option value="pop">Pop</option>
+            <option value="slideUp">Slide Up</option>
+            <option value="fade">Fade</option>
+            <option value="flip">Flip</option>
+            <option value="shake">Shake</option>
+          </select>
         </div>
 
         <div class="section">
@@ -718,13 +701,8 @@
             <option value="click">Classic Click</option>
           </select>
 
-          <div class="row" style="margin-top:10px">
-            <button class="btn small" id="btnTestClickSound" type="button">▶️ Прослушать</button>
-            <button class="btn small danger" id="btnStopClickSound" type="button">⏹ Стоп</button>
-          </div>
-
           <div class="muted" style="margin-top:8px">
-            Срабатывает при клике по колоде (в игре) + можно прослушать в редакторе.
+            Срабатывает при клике по колоде (в игре).
           </div>
         </div>
 
@@ -744,7 +722,7 @@
           <input id="fileGameBg" type="file" accept="image/*" />
 
           <div class="muted" style="margin-top:8px">
-            Картинка встраивается в dataURL. Если большие файлы — ссылка будет длинной.
+            Картинка встраивается в ссылку (dataURL). Если картинок много/большие — ссылка может стать слишком длинной.
           </div>
         </div>
 
@@ -806,8 +784,7 @@
         <div class="section">
           <div class="title">Экспорт в Genially</div>
           <div class="muted">
-            Нажми <b>“📋 Скопировать код”</b> — скопируется iframe с <b>src=...index.html?mode=game#CFG=...</b><br>
-            Его Genially принимает намного лучше, чем srcdoc.
+            Нажми <b>“📋 Скопировать код”</b> — iframe уже будет в буфере. Вставляй в Genially.
           </div>
         </div>
 
@@ -949,10 +926,12 @@
     errbar.classList.add("show");
     errbar.textContent = "Ошибка JS:\n" + msg;
   }
+
   window.addEventListener("error", (e) => {
     const m = e?.error?.stack || e?.message || String(e);
     showErr(m);
   });
+
   window.addEventListener("unhandledrejection", (e) => {
     const m = e?.reason?.stack || e?.reason?.message || String(e?.reason || e);
     showErr(m);
@@ -963,7 +942,10 @@
   function uid(){
     return "q_" + Math.random().toString(36).slice(2,9) + "_" + Date.now().toString(36);
   }
-  function deepClone(obj){ return JSON.parse(JSON.stringify(obj)); }
+
+  function deepClone(obj){
+    return JSON.parse(JSON.stringify(obj));
+  }
 
   function toast(msg){
     const t = $("toast");
@@ -1025,70 +1007,21 @@
             linear-gradient(180deg, rgba(10,14,40,.65), rgba(5,8,22,1))`;
   }
 
-  async function copyToClipboard(text){
-    try{
-      if (navigator.clipboard && window.isSecureContext){
-        await navigator.clipboard.writeText(text);
-        return true;
-      }
-    }catch(e){}
-
-    try{
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.left = "0";
-      ta.style.top = "0";
-      ta.style.opacity = "0";
-      ta.style.width = "1px";
-      ta.style.height = "1px";
-      ta.style.pointerEvents = "none";
-      ta.style.zIndex = "-1";
-      document.body.appendChild(ta);
-      ta.focus();
-      ta.select();
-      ta.setSelectionRange(0, ta.value.length);
-      const ok = document.execCommand("copy");
-      document.body.removeChild(ta);
-      return ok;
-    }catch(e){
-      return false;
-    }
+  // --- helpers for Genially embed (URL-safe base64) ---
+  function b64UrlEncodeUtf8(str){
+    const b64 = btoa(unescape(encodeURIComponent(str)));
+    return b64.replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+  }
+  function b64UrlDecodeUtf8(b64url){
+    const b64 = String(b64url||"").replace(/-/g,"+").replace(/_/g,"/");
+    const pad = b64.length % 4 ? "=".repeat(4 - (b64.length % 4)) : "";
+    return decodeURIComponent(escape(atob(b64 + pad)));
   }
 
-  // ===== HASH CFG (для Genially) =====
-  function b64EncodeUnicode(str){
-    return btoa(unescape(encodeURIComponent(str)));
-  }
-  function b64DecodeUnicode(str){
-    return decodeURIComponent(escape(atob(str)));
-  }
-  function baseUrlNoQueryHash(){
-    return location.origin + location.pathname; // https://.../index.html
-  }
-  function encodeCfgToHash(cfg){
-    const json = JSON.stringify(cfg);
-    const b64 = b64EncodeUnicode(json);
-    return "CFG=" + b64.replaceAll("+","-").replaceAll("/","_").replaceAll("=",".");
-  }
-  function decodeCfgFromHash(){
-    const h = (location.hash || "").replace(/^#/,"");
-    if (!h.startsWith("CFG=")) return null;
-    let b = h.slice(4).replaceAll("-","+").replaceAll("_","/").replaceAll(".","=");
-    try{
-      const json = b64DecodeUnicode(b);
-      return JSON.parse(json);
-    }catch(e){
-      return null;
-    }
-  }
-
-  function renderLatexInto(el, latexEnabled){
+  function renderMathForCfg(el, latexEnabled){
     if (!latexEnabled) return;
     if (!el) return;
     if (typeof window.renderMathInElement !== "function") return;
-
     try{
       window.renderMathInElement(el, {
         delimiters: [
@@ -1102,172 +1035,136 @@
     }catch(e){}
   }
 
-  // ===== Click sound (preview + game) =====
-  let __previewClickSound = null;
-
-  function createClickSoundPlayer(type){
+  function generateClickSound(type){
     if (!type || type === "off") return null;
 
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const out = ctx.createGain();
     out.connect(ctx.destination);
-    out.gain.value = 0.8;
 
     function play(){
       const now = ctx.currentTime;
+      out.gain.setValueAtTime(0.5, now);
+
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.connect(gain);
       gain.connect(out);
 
-      gain.gain.setValueAtTime(0.0001, now);
-
       if (type === "tap"){
         osc.type = "sine";
         osc.frequency.setValueAtTime(520, now);
-        gain.gain.exponentialRampToValueAtTime(0.22, now + 0.005);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
-        osc.start(now); osc.stop(now + 0.10);
-        return;
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        osc.start(now);
+        osc.stop(now + 0.08);
       }
-
-      if (type === "card"){
+      else if (type === "card"){
         osc.type = "triangle";
         osc.frequency.setValueAtTime(240, now);
-        gain.gain.exponentialRampToValueAtTime(0.26, now + 0.008);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
-        osc.start(now); osc.stop(now + 0.15);
-        return;
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.start(now);
+        osc.stop(now + 0.13);
       }
-
-      if (type === "magic"){
+      else if (type === "magic"){
         osc.type = "sine";
         osc.frequency.setValueAtTime(880, now);
         osc.frequency.exponentialRampToValueAtTime(1400, now + 0.12);
-        gain.gain.exponentialRampToValueAtTime(0.18, now + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
-        osc.start(now); osc.stop(now + 0.19);
-        return;
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.16);
       }
-
-      if (type === "pop"){
+      else if (type === "pop"){
         osc.type = "square";
         osc.frequency.setValueAtTime(300, now);
-        gain.gain.exponentialRampToValueAtTime(0.16, now + 0.008);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
-        osc.start(now); osc.stop(now + 0.12);
-        return;
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+        osc.start(now);
+        osc.stop(now + 0.1);
       }
-
-      // click
-      osc.type = "square";
-      osc.frequency.setValueAtTime(1200, now);
-      gain.gain.exponentialRampToValueAtTime(0.12, now + 0.004);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
-      osc.start(now); osc.stop(now + 0.07);
+      else if (type === "click"){
+        osc.type = "square";
+        osc.frequency.setValueAtTime(1200, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.start(now);
+        osc.stop(now + 0.06);
+      }
     }
 
-    function stop(){
-      try{ ctx.close(); }catch(e){}
-    }
-
-    return { ctx, play, stop };
+    return { ctx, play };
   }
 
-  function stopPreviewClickSound(){
-    if (__previewClickSound){
-      try{ __previewClickSound.stop(); }catch(e){}
-      __previewClickSound = null;
-    }
-  }
-
-  function playPreviewClickSound(type){
-    stopPreviewClickSound();
-    const p = createClickSoundPlayer(type);
-    if (!p) return;
-    __previewClickSound = p;
-    try{
-      if (p.ctx.state === "suspended") p.ctx.resume();
-      p.play();
-    }catch(e){}
-  }
-
-  // ===== GAME (без srcdoc, просто по URL+hash) =====
   function runGame(shell, cfg){
     const meta = cfg.meta || {title:"Вытяни карту", subtitle:"Нажмите на колоду, чтобы вытянуть карту"};
     const timer = cfg.timer || {enabled:false, minutes:1};
     const glow = cfg.glow || {enabled:true, color:"#6aa4ff"};
     const questions = Array.isArray(cfg.questions) ? cfg.questions.slice() : [];
     const qStyle = cfg.qStyle || {fontFamily:'system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif', fontSize:16, color:'#eaf0ff'};
+    const cardAnim = (cfg.cardAnim || "off");
     const bgm = cfg.bgm || {mode:"off", dataUrl:"", volume:0.6};
     const clickSoundType = cfg.clickSound || "off";
-
-    const orderMode = cfg.orderMode || "random";
-    const drawAnim = cfg.drawAnim || {enabled:true, flipType:"flipY", durationMs:650};
 
     document.documentElement.style.setProperty("--qFont", qStyle.fontFamily || 'system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif');
     document.documentElement.style.setProperty("--qSize", Math.max(12, Math.min(40, Number(qStyle.fontSize || 16))) + "px");
     document.documentElement.style.setProperty("--qColor", qStyle.color || "#eaf0ff");
-    document.documentElement.style.setProperty("--drawDur", Math.max(200, Math.min(2000, Number(drawAnim.durationMs || 650))) + "ms");
 
-    // order
-    const order = questions.slice();
-    if (orderMode === "random"){
-      for(let i=order.length-1;i>0;i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [order[i], order[j]] = [order[j], order[i]];
-      }
+    const order = [...questions];
+    for(let i=order.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [order[i], order[j]] = [order[j], order[i]];
     }
 
     shell.innerHTML = `
-      <div class="panel">
-        <div class="panel-body" style="padding:0">
-          <div class="preview-stage" id="gStage">
-            <div class="preview-ui">
-              <div class="left">
-                <div class="title" id="gTitle"></div>
-                <div class="sub" id="gSub"></div>
-              </div>
-              <div class="right">
-                <div class="counter" id="gCounter"></div>
-                <div class="progress"><div class="bar" id="gBar"></div></div>
-                <div class="pill" id="gTimerPill" style="display:none"></div>
-              </div>
+    <div class="panel">
+      <div class="panel-body" style="padding:0">
+        <div class="preview-stage" id="gStage">
+          <div class="preview-ui">
+            <div class="left">
+              <div class="title" id="gTitle"></div>
+              <div class="sub" id="gSub"></div>
             </div>
-
-            <div class="preview-cards">
-              <div class="deck-wrap" id="gDeckWrap">
-                <div class="deck-stack" id="gDeck" title="Нажмите, чтобы вытянуть карту">
-                  <div class="deck-card"></div>
-                  <div class="deck-card"></div>
-                  <div class="deck-card"></div>
-                </div>
-              </div>
-
-              <div class="front-card" id="gFront">
-                <div class="frame"></div>
-                <div class="content">
-                  <div class="pill" id="gTag">Старт</div>
-
-                  <div class="block">
-                    <div class="label">Вопрос</div>
-                    <div class="text qText" id="gPrompt"></div>
-                  </div>
-
-                  <div class="block">
-                    <div class="label">Ответ</div>
-                    <div class="mini-btns" id="gAnswers"></div>
-                  </div>
-
-                  <div class="muted" id="gHint" style="margin-top:auto; padding:0 2px"></div>
-                </div>
-              </div>
+            <div class="right">
+              <div class="counter" id="gCounter"></div>
+              <div class="progress"><div class="bar" id="gBar"></div></div>
+              <div class="pill" id="gTimerPill" style="display:none"></div>
             </div>
-
           </div>
+
+          <div class="preview-cards">
+            <div class="deck-wrap" id="gDeckWrap">
+              <div class="deck-stack" id="gDeck" title="Нажмите, чтобы вытянуть карту">
+                <div class="deck-card"></div>
+                <div class="deck-card"></div>
+                <div class="deck-card"></div>
+              </div>
+            </div>
+
+            <div class="front-card" id="gFront">
+              <div class="frame"></div>
+              <div class="content">
+                <div class="pill" id="gTag">Старт</div>
+
+                <div class="block">
+                  <div class="label">Вопрос</div>
+                  <div class="text qText" id="gPrompt"></div>
+                </div>
+
+                <div class="block">
+                  <div class="label">Ответ</div>
+                  <div class="mini-btns" id="gAnswers"></div>
+                </div>
+
+                <div class="muted" id="gHint" style="margin-top:auto; padding:0 2px"></div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-    `;
+    </div>`;
 
     const stage = shell.querySelector("#gStage");
     const deckWrap = shell.querySelector("#gDeckWrap");
@@ -1307,11 +1204,13 @@
     gTitle.textContent = meta.title || "Вытяни карту";
     gSub.textContent = meta.subtitle || "";
 
-    function applyDrawAnim(){
-      front.classList.remove("drawAnim","flipY","flipX","flipDiag");
-      if (!drawAnim?.enabled) return;
-      front.classList.add("drawAnim");
-      front.classList.add(drawAnim.flipType || "flipY");
+    function applyAnim(){
+      front.classList.remove("cardAnim-pop","cardAnim-slideUp","cardAnim-fade","cardAnim-flip","cardAnim-shake");
+      if (cardAnim === "pop") front.classList.add("cardAnim-pop");
+      else if (cardAnim === "slideUp") front.classList.add("cardAnim-slideUp");
+      else if (cardAnim === "fade") front.classList.add("cardAnim-fade");
+      else if (cardAnim === "flip") front.classList.add("cardAnim-flip");
+      else if (cardAnim === "shake") front.classList.add("cardAnim-shake");
     }
 
     let bgmAudio = null;
@@ -1333,9 +1232,10 @@
       if (!bgmAudio) return;
       bgmAudio.play().catch(()=>{});
     }
+
     initBgm();
 
-    const clickSound = createClickSoundPlayer(clickSoundType);
+    const clickSound = generateClickSound(clickSoundType);
 
     let idx = -1;
     let lock = false;
@@ -1343,7 +1243,9 @@
     let timerId = null;
     let endsAt = 0;
 
-    function setFrontVisible(v){ front.style.display = v ? "" : "none"; }
+    function setFrontVisible(v){
+      front.style.display = v ? "" : "none";
+    }
     setFrontVisible(false);
 
     function setProgress(){
@@ -1354,7 +1256,10 @@
     }
 
     function clearTimer(){
-      if (timerId){ clearInterval(timerId); timerId = null; }
+      if (timerId){
+        clearInterval(timerId);
+        timerId = null;
+      }
       gTimerPill.style.display = "none";
     }
 
@@ -1389,7 +1294,7 @@
 
       if (!q){
         setFrontVisible(true);
-        applyDrawAnim();
+        applyAnim();
         gTag.textContent = "Финиш";
         gPrompt.textContent = "Карты закончились ✅";
         gHint.textContent = "Нажмите на колоду, чтобы начать заново.";
@@ -1397,7 +1302,7 @@
       }
 
       setFrontVisible(true);
-      applyDrawAnim();
+      applyAnim();
 
       gTag.textContent =
         (q.answer?.type === "choice") ? "С выбором ответа" :
@@ -1418,7 +1323,7 @@
       }
       else{
         gPrompt.textContent = q.prompt?.value || "";
-        renderLatexInto(gPrompt, !!cfg.latex);
+        renderMathForCfg(gPrompt, !!cfg.latex);
       }
 
       if (q.answer?.type === "choice"){
@@ -1470,7 +1375,10 @@
           if (e) e.stopPropagation();
           if (answered) return;
           const v = String(inp.value || "").trim().toLowerCase();
-          if (!v){ toast("Введите ответ"); return; }
+          if (!v){
+            toast("Введите ответ");
+            return;
+          }
 
           answered = true;
           const ok = accepts.includes(v);
@@ -1490,7 +1398,10 @@
 
         btn.onclick = check;
 
-        inp.addEventListener("keydown", (e)=>{ if(e.key === "Enter") check(e); });
+        inp.addEventListener("keydown", (e)=>{
+          if(e.key === "Enter") check(e);
+        });
+
         inp.addEventListener("click",(e)=>e.stopPropagation());
         btn.addEventListener("click",(e)=>e.stopPropagation());
 
@@ -1516,7 +1427,10 @@
           if (e) e.stopPropagation();
           if (answered) return;
           const v = String(inp.value || "").trim();
-          if (!v){ toast("Введите ответ"); return; }
+          if (!v){
+            toast("Введите ответ");
+            return;
+          }
 
           answered = true;
           inp.disabled = true;
@@ -1532,7 +1446,10 @@
 
         btn.onclick = done;
 
-        inp.addEventListener("keydown", (e)=>{ if(e.key === "Enter") done(e); });
+        inp.addEventListener("keydown", (e)=>{
+          if(e.key === "Enter") done(e);
+        });
+
         inp.addEventListener("click",(e)=>e.stopPropagation());
         btn.addEventListener("click",(e)=>e.stopPropagation());
 
@@ -1572,7 +1489,9 @@
       clearTimer();
       startTimer();
 
-      if(fromTimer){ toast("⏱ Время вышло — следующая карта"); }
+      if(fromTimer){
+        toast("⏱ Время вышло — следующая карта");
+      }
     }
 
     setProgress();
@@ -1580,41 +1499,153 @@
     gTag.textContent = "Старт";
 
     deck.addEventListener("click", ()=> nextCard(false));
-    deck.addEventListener("keydown", (e)=>{ if(e.key === "Enter" || e.key === " ") nextCard(false); });
+    deck.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter" || e.key === " ") nextCard(false);
+    });
+
     deck.tabIndex = 0;
   }
 
-  // ====== MODE: GAME ======
+  async function copyToClipboard(text){
+    try{
+      if (navigator.clipboard && window.isSecureContext){
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    }catch(e){}
+
+    try{
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "0";
+      ta.style.top = "0";
+      ta.style.opacity = "0";
+      ta.style.width = "1px";
+      ta.style.height = "1px";
+      ta.style.pointerEvents = "none";
+      ta.style.zIndex = "-1";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, ta.value.length);
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    }catch(e){
+      return false;
+    }
+  }
+
+  function escapeAttr(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&lt;") /* intentionally keep */
+      .replaceAll('"',"&quot;");
+  }
+
+  function renderLatexInto(el){
+    if (!Editor.latex) return;
+    if (!el) return;
+    if (typeof window.renderMathInElement !== "function") return;
+
+    try{
+      window.renderMathInElement(el, {
+        delimiters: [
+          {left:"$$", right:"$$", display:true},
+          {left:"$", right:"$", display:false},
+          {left:"\\(", right:"\\)", display:false},
+          {left:"\\[", right:"\\]", display:true}
+        ],
+        throwOnError: false
+      });
+    }catch(e){}
+  }
+
+  function buildGameSrcdoc(cfg){
+    return `<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Игра</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"><\/script>
+
+<style>${escapeAttr(document.querySelector("style").textContent || "")}</style>
+</head>
+
+<body class="gameOnly">
+<div id="gameRoot" style="display:block;min-height:100vh;padding:14px">
+  <div id="gameShell"></div>
+</div>
+
+<div class="toast" id="toast">Скопировано</div>
+
+<script>
+"use strict";
+const cfg = ${JSON.stringify(cfg)};
+<\/script>
+</body>
+</html>`;
+  }
+
+  function buildPackedIframe(cfg){
+    // В Genially часто режется/игнорируется srcdoc. Поэтому даём iframe на URL этой же страницы.
+    // Данные передаются через hash (после #), чтобы работало на GitHub Pages и не зависело от сервера.
+    const packed = b64UrlEncodeUtf8(JSON.stringify(cfg));
+    const base = location.origin + location.pathname;
+    const url = base + "?mode=game#data=" + packed;
+    return `<iframe src="${escapeAttr(url)}" style="width:100%;height:720px;border:0;border-radius:18px;overflow:hidden;background:transparent" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>`;
+  }
+
   if (mode === "game"){
     document.body.classList.add("gameOnly");
+
     const editorRoot = $("editorRoot");
     const gameRoot = $("gameRoot");
     const shell = $("gameShell");
+
     if (editorRoot) editorRoot.style.display = "none";
     if (gameRoot) gameRoot.style.display = "block";
 
-    const cfg = decodeCfgFromHash();
-    if (!cfg){
-      shell.innerHTML = `
-        <div class="panel" style="max-width:860px;margin:0 auto">
-          <div class="panel-header"><div class="h">Игра</div></div>
-          <div class="panel-body">
-            <div class="muted">Нет конфигурации в ссылке (#CFG=...). Откройте через код из редактора.</div>
-          </div>
+    // Достаём данные из hash: #data=...
+    let packed = "";
+    if (location.hash){
+      const h = location.hash.startsWith("#") ? location.hash.slice(1) : location.hash;
+      if (h.startsWith("data=")) packed = h.slice(5);
+      else packed = h;
+    }
+
+    let cfg = null;
+    try{
+      if (packed){
+        cfg = JSON.parse(b64UrlDecodeUtf8(packed));
+      }
+    }catch(e){
+      cfg = null;
+    }
+
+    if (!cfg || !Array.isArray(cfg.questions) || cfg.questions.length === 0){
+      shell.innerHTML = `<div class="panel" style="max-width:860px;margin:0 auto">
+        <div class="panel-header"><div class="h">Игра</div></div>
+        <div class="panel-body">
+          <div class="muted">Нет данных игры. Откройте игру через iframe, который копируется в редакторе (кнопка “Скопировать код”).</div>
         </div>
-      `;
+      </div>`;
       return;
     }
+
     runGame(shell, cfg);
     return;
   }
 
-  // ====== EDITOR ======
   const Editor = {
     meta: { title:"Вытяни карту", subtitle:"Нажмите на колоду, чтобы вытянуть карту" },
-    orderMode: "random",
-    drawAnim: { enabled: true, flipType: "flipY", durationMs: 650 },
-
     gameBg: { preset:"aurora", uploadDataUrl:"" },
     deckBackUrl: "",
     frontBgUrl: "",
@@ -1624,16 +1655,25 @@
     latex: false,
     bgm: { mode: "off", dataUrl: "", volume: 0.6 },
     clickSound: "off",
+    cardAnim: "off",
     questions: [],
     draft: null,
     editingId: null
   };
-
   function applyQuestionStyle(){
     document.documentElement.style.setProperty("--qFont", Editor.qStyle.fontFamily || 'system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif');
     document.documentElement.style.setProperty("--qSize", Math.max(12, Math.min(40, Number(Editor.qStyle.fontSize || 16))) + "px");
     document.documentElement.style.setProperty("--qColor", Editor.qStyle.color || "#eaf0ff");
-    document.documentElement.style.setProperty("--drawDur", Math.max(200, Math.min(2000, Number(Editor.drawAnim.durationMs || 650))) + "ms");
+  }
+
+  function applyAnimClass(el, anim){
+    if (!el) return;
+    el.classList.remove("cardAnim-pop","cardAnim-slideUp","cardAnim-fade","cardAnim-flip","cardAnim-shake");
+    if (anim === "pop") el.classList.add("cardAnim-pop");
+    else if (anim === "slideUp") el.classList.add("cardAnim-slideUp");
+    else if (anim === "fade") el.classList.add("cardAnim-fade");
+    else if (anim === "flip") el.classList.add("cardAnim-flip");
+    else if (anim === "shake") el.classList.add("cardAnim-shake");
   }
 
   function applyPreviewBackgrounds(){
@@ -1650,6 +1690,8 @@
         c.style.backgroundPosition = "center";
       } else {
         c.style.backgroundImage = "";
+        c.style.backgroundSize = "";
+        c.style.backgroundPosition = "";
       }
     });
 
@@ -1660,6 +1702,8 @@
       front.style.backgroundPosition = "center";
     } else {
       front.style.backgroundImage = "";
+      front.style.backgroundSize = "";
+      front.style.backgroundPosition = "";
     }
 
     document.documentElement.style.setProperty("--glow", Editor.glow.color || "#6aa4ff");
@@ -1684,14 +1728,6 @@
     applyPreviewBackgrounds();
   }
 
-  function applyPreviewDrawAnim(){
-    const front = $("pvFront");
-    front.classList.remove("drawAnim","flipY","flipX","flipDiag");
-    if (!Editor.drawAnim.enabled) return;
-    front.classList.add("drawAnim");
-    front.classList.add(Editor.drawAnim.flipType || "flipY");
-  }
-
   function renderPreviewCardFromQuestion(q){
     const tag = $("pvTag");
     const promptWrap = $("pvPrompt");
@@ -1700,7 +1736,7 @@
     area.innerHTML = "";
     promptWrap.innerHTML = "";
 
-    applyPreviewDrawAnim();
+    applyAnimClass($("pvFront"), Editor.cardAnim);
 
     if (!q){
       tag.textContent = "Пример";
@@ -1727,7 +1763,7 @@
     }
     else{
       promptWrap.textContent = q.prompt.value || "";
-      renderLatexInto(promptWrap, Editor.latex);
+      renderLatexInto(promptWrap);
     }
 
     if (q.answer.type === "choice"){
@@ -1925,7 +1961,6 @@
       list.appendChild(row);
     });
   }
-
   function renderTextAnswersUI(){
     const list = $("textAnswers");
     list.innerHTML = "";
@@ -2032,6 +2067,7 @@
   }
 
   // ==== биндинги ====
+
   $("inpTitle").addEventListener("input", ()=>{
     Editor.meta.title = $("inpTitle").value;
     updatePreviewBasics();
@@ -2040,28 +2076,6 @@
   $("inpSubtitle").addEventListener("input", ()=>{
     Editor.meta.subtitle = $("inpSubtitle").value;
     updatePreviewBasics();
-  });
-
-  $("selOrderMode").addEventListener("change", ()=>{
-    Editor.orderMode = $("selOrderMode").value || "random";
-    toast(Editor.orderMode === "random" ? "Рандом включён" : "По порядку");
-  });
-
-  $("chkDrawAnim").addEventListener("change", ()=>{
-    Editor.drawAnim.enabled = $("chkDrawAnim").checked;
-    applyPreviewDrawAnim();
-  });
-
-  $("selFlipType").addEventListener("change", ()=>{
-    Editor.drawAnim.flipType = $("selFlipType").value || "flipY";
-    applyPreviewDrawAnim();
-  });
-
-  $("inpDrawDur").addEventListener("input", ()=>{
-    const v = Number($("inpDrawDur").value || 650);
-    Editor.drawAnim.durationMs = Math.max(200, Math.min(2000, v));
-    applyQuestionStyle();
-    applyPreviewDrawAnim();
   });
 
   $("selQFont").addEventListener("change", ()=>{
@@ -2083,6 +2097,11 @@
 
   $("chkLatex").addEventListener("change", ()=>{
     Editor.latex = $("chkLatex").checked;
+    renderPreviewCardFromQuestion(Editor.questions[0] || null);
+  });
+
+  $("selCardAnim").addEventListener("change", ()=>{
+    Editor.cardAnim = $("selCardAnim").value || "off";
     renderPreviewCardFromQuestion(Editor.questions[0] || null);
   });
 
@@ -2111,15 +2130,6 @@
 
   $("selClickSound").addEventListener("change", ()=>{
     Editor.clickSound = $("selClickSound").value || "off";
-  });
-
-  $("btnTestClickSound").addEventListener("click", ()=>{
-    playPreviewClickSound(Editor.clickSound);
-  });
-
-  $("btnStopClickSound").addEventListener("click", ()=>{
-    stopPreviewClickSound();
-    toast("Стоп");
   });
 
   $("selGameBgPreset").addEventListener("change", ()=>{
@@ -2274,7 +2284,6 @@
     renderPreviewCardFromQuestion(q);
     toast("Черновик показан в превью");
   };
-
   $("btnSaveQ").onclick = ()=>{
     const q = draftFromControls();
     if (!q) return;
@@ -2283,10 +2292,12 @@
       toast("Введите текст вопроса");
       return;
     }
+
     if (q.prompt.mode === "image" && !(q.prompt.value || "").trim()){
       toast("Загрузите картинку вопроса");
       return;
     }
+
     if (q.prompt.mode === "audio" && !(q.prompt.value || "").trim()){
       toast("Загрузите аудио вопроса");
       return;
@@ -2344,8 +2355,6 @@
 
     const payload = {
       meta: Editor.meta,
-      orderMode: Editor.orderMode,
-      drawAnim: Editor.drawAnim,
       gameBg: Editor.gameBg,
       deckBackUrl: Editor.deckBackUrl,
       frontBgUrl: Editor.frontBgUrl,
@@ -2355,17 +2364,11 @@
       latex: Editor.latex,
       bgm: Editor.bgm,
       clickSound: Editor.clickSound,
+      cardAnim: Editor.cardAnim,
       questions: Editor.questions
     };
 
-    const hash = encodeCfgToHash(payload);
-    const src = baseUrlNoQueryHash() + "?mode=game#" + hash;
-
-    const iframeCode =
-      '<iframe src="' + src + '" ' +
-      'style="width:100%;height:720px;border:0;border-radius:18px;overflow:hidden;background:transparent" ' +
-      'allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>';
-
+    const iframeCode = buildPackedIframe(payload);
     const ok = await copyToClipboard(iframeCode);
     toast(ok ? "Код скопирован ✅" : "Не удалось скопировать");
   });
@@ -2376,5 +2379,6 @@
 
 })();
 </script>
+
 </body>
 </html>
